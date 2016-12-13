@@ -18,10 +18,10 @@
     <!-- android:src="@mipmap/app_logo" -->
 
     <TextView
-        android:id="@+id/usernum_textview"
+        android:id="@+id/token_textview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/set_usernum_textview"
+        android:text="@string/set_token_textview"
         android:layout_below="@+id/logo"
         android:layout_marginTop="68dp"
         android:textAlignment="center"
@@ -32,10 +32,10 @@
         android:fontPath="fonts/Gotham-Bold.otf" />
 
     <EditText
-        android:id="@+id/usernum_edittext"
+        android:id="@+id/token_edittext"
         android:layout_width="match_parent"
         android:layout_height="35dp"
-        android:layout_below="@+id/usernum_textview"
+        android:layout_below="@+id/token_textview"
         android:layout_marginRight="60dp"
         android:layout_marginLeft="60dp"
         android:layout_marginTop="32dp"
@@ -43,17 +43,17 @@
         android:inputType="text"
         android:imeOptions="actionDone"
         android:fontPath="fonts/Gotham-Bold.otf"/>
-<!--    android:background="@drawable/rounded_edittext" -->
+    <!--    android:background="@drawable/rounded_edittext" -->
 
     <Button
-        android:id="@+id/usernum_submit_button"
+        android:id="@+id/token_submit_button"
         android:layout_width="170dp"
         android:layout_height="60dp"
-        android:text="@string/usernum_submit_button"
-        android:layout_below="@+id/usernum_edittext"
+        android:text="@string/token_submit_button"
+        android:layout_below="@+id/token_edittext"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
-        android:onClick="usernumSubmit"
+        android:onClick="tokenSubmit"
         android:fontPath="fonts/Gotham-Bold.otf"/>
 
 </RelativeLayout>
