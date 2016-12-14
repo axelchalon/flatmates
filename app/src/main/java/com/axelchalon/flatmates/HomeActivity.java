@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         getHighscores();
         getTasks();
         getFlatmates();
-        changeTaskWeight("8","10");
+        renameTask("8","Tâche (10)");
     }
 
     protected void getHighscores() {
@@ -349,6 +349,42 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println("CHANGE TASK WEIGHT OK");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("WCC");
+                        error.printStackTrace();
+
+                        Context context = getApplicationContext();
+                        CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(myUserRequest);
+    }
+
+    protected void renameTask(String task_id, String new_name) {
+
+        SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String usernum = prefs.getString("usernum", null);
+
+        HashMap<String,String> params = new HashMap<String, String>();
+
+        final Context ctx = this;
+        JsonObjectRequest myUserRequest = new JsonObjectRequest
+                (Request.Method.GET, "http://swarm.ovh:4/index.php?action=rename_task&user_num=" + usernum + "&task_id=" + task_id + "&new_name=" + new_name, new JSONObject(params), new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("RENAME TASK OK");
                     }
                 }, new Response.ErrorListener() {
 
