@@ -29,7 +29,7 @@
         android:lineSpacingExtra="8dp"
         android:layout_marginRight="50dp"
         android:layout_marginLeft="50dp"
-        android:fontPath="fonts/Gotham-Bold.otf" />
+        fontPath="fonts/Gotham-Bold.otf" />
 
     <EditText
         android:id="@+id/token_edittext"
@@ -42,7 +42,7 @@
         android:paddingLeft="10dp"
         android:inputType="text"
         android:imeOptions="actionDone"
-        android:fontPath="fonts/Gotham-Bold.otf"/>
+        fontPath="fonts/Gotham-Bold.otf"/>
     <!--    android:background="@drawable/rounded_edittext" -->
 
     <Button
@@ -54,6 +54,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"
         android:onClick="tokenSubmit"
-        android:fontPath="fonts/Gotham-Bold.otf"/>
+        fontPath="fonts/Gotham-Bold.otf"/>
 
 </RelativeLayout>

@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,6 +31,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String USER_PREFS = "flatmates-prefs";
     private Button submitButton;
     private EditText usernumEditText;
+    private EditText usernameEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         // Check if usernum is already set, if so, directly go to mainMenu
         SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
         String savedusernum = prefs.getString("usernum", null);
-        if (savedusernum != null) {
+        if (false && savedusernum != null) {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
         }
@@ -54,25 +57,30 @@ public class SignupActivity extends AppCompatActivity {
     public void usernumSubmit(View view) {
         submitButton = (Button) findViewById(R.id.usernum_submit_button);
         usernumEditText = (EditText) findViewById(R.id.usernum_edittext);
+        usernameEditText = (EditText) findViewById(R.id.username_edittext);
         assert usernumEditText != null;
         String usernum = usernumEditText.getText().toString().replace(" ", "");
+        String username = usernameEditText.getText().toString().replace(" ", "");
 
         // Saving usernum in sharedPreferences
         if (usernum.trim().length() > 0) {
             SharedPreferences.Editor editor = getSharedPreferences(USER_PREFS, MODE_PRIVATE).edit();
             editor.putString("usernum", usernum);
+            editor.putString("username", username);
             editor.commit();
 
             SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
             HashMap<String,String> params = new HashMap<String, String>();
+            params.put("action","sign_up");
             params.put("user_num",usernum);
 
             final Context ctx = this;
             JsonObjectRequest myUserRequest = new JsonObjectRequest
-                    (Request.Method.GET, "http://swarm.ovh:4/index.php", new JSONObject(params), new Response.Listener<JSONObject>() {
+                    (Request.Method.GET, "http://swarm.ovh:4/index.php?action=sign_up&user_num=" + usernum, new JSONObject(params), new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
+                            System.out.println("WBB");
                             Intent i = new Intent(ctx, VerifyActivity.class);
                             startActivity(i);
                         }
@@ -80,12 +88,29 @@ public class SignupActivity extends AppCompatActivity {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
+
+                            Context context = getApplicationContext();
+                            CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                            int duration = Toast.LENGTH_LONG;
+
+                            Toast toast = Toast.makeText(context, text, duration);
+                            toast.show();
+
+                            System.out.println("WCC");
                             error.printStackTrace();
+
+                            VolleyLog.e("Error: ", error.getMessage());
+                            try {
+                                System.out.println(new String(error.networkResponse.data,"UTF-8"));
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
             Volley.newRequestQueue(getApplicationContext()).add(myUserRequest);
         } else {
+            System.out.println("WDD");
             Context context = getApplicationContext();
             CharSequence text = "Votre numéro de téléphone, camarade !";
             int duration = Toast.LENGTH_LONG;
