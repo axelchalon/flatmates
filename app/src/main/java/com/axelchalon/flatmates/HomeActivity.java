@@ -42,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         getHighscores();
         getTasks();
         getFlatmates();
-        didTask("8");
+        addFlatmate("667");
     }
 
     protected void getHighscores() {
@@ -168,6 +168,42 @@ public class HomeActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("WCC");
+                        error.printStackTrace();
+
+                        Context context = getApplicationContext();
+                        CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(myUserRequest);
+    }
+
+    protected void addFlatmate(String new_num) {
+
+        SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String usernum = prefs.getString("usernum", null);
+
+        HashMap<String,String> params = new HashMap<String, String>();
+
+        final Context ctx = this;
+        JsonObjectRequest myUserRequest = new JsonObjectRequest
+                (Request.Method.GET, "http://swarm.ovh:4/index.php?action=add_flatmate&user_num=" + usernum + "&new_num=" + new_num, new JSONObject(params), new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("NEW FLATMATE - OK");
                     }
                 }, new Response.ErrorListener() {
 
