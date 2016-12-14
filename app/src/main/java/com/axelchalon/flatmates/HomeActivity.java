@@ -42,7 +42,6 @@ public class HomeActivity extends AppCompatActivity {
         getHighscores();
         getTasks();
         getFlatmates();
-        addFlatmate("667");
     }
 
     protected void getHighscores() {
@@ -236,6 +235,43 @@ public class HomeActivity extends AppCompatActivity {
         final Context ctx = this;
         JsonObjectRequest myUserRequest = new JsonObjectRequest
                 (Request.Method.GET, "http://swarm.ovh:4/index.php?action=did_task&user_num=" + usernum + "&task_id=" + task_id, new JSONObject(params), new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("DID TASK OK");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("WCC");
+                        error.printStackTrace();
+
+                        Context context = getApplicationContext();
+                        CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(getApplicationContext()).add(myUserRequest);
+    }
+
+
+    protected void newTask(String task_name, String task_weight) {
+
+        SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String usernum = prefs.getString("usernum", null);
+
+        HashMap<String,String> params = new HashMap<String, String>();
+
+        final Context ctx = this;
+        JsonObjectRequest myUserRequest = new JsonObjectRequest
+                (Request.Method.GET, "http://swarm.ovh:4/index.php?action=new_task&user_num=" + usernum + "&new_task=" + task_name + "&new_weight=" + task_weight, new JSONObject(params), new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
