@@ -48,7 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         // Check if usernum is already set, if so, directly go to mainMenu
         SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
         String savedusernum = prefs.getString("usernum", null);
-        if (false && savedusernum != null) {
+        if (savedusernum != null) {
             Intent i = new Intent(this, HomeActivity.class);
             startActivity(i);
         }
