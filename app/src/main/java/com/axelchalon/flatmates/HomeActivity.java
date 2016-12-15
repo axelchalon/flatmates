@@ -3,10 +3,14 @@ package com.axelchalon.flatmates;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -21,11 +25,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
     private static final String USER_PREFS = "flatmates-prefs";
+    ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +47,17 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         getHighscores();
-        getTasks();
+        // getTasks();
         getFlatmates();
+
+        // Get the ViewPager and set it's PagerAdapter so that it can display items
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new SampleFragmentPagerAdapter(getSupportFragmentManager(),
+                HomeActivity.this));
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     protected void getHighscores() {
@@ -100,6 +116,8 @@ public class HomeActivity extends AppCompatActivity {
 
         HashMap<String,String> params = new HashMap<String, String>();
 
+        mListView = (ListView) findViewById(R.id.homeTasksListView);
+
         final Context ctx = this;
         JsonObjectRequest myUserRequest = new JsonObjectRequest
                 (Request.Method.GET, "http://swarm.ovh:4/index.php?action=get_tasks&user_num=" + usernum, new JSONObject(params), new Response.Listener<JSONObject>() {
@@ -111,11 +129,18 @@ public class HomeActivity extends AppCompatActivity {
                         try {
                             JSONArray scores = response.getJSONArray("history");
 
+                            List<String> tasks = new ArrayList<String>();
+
                             for(int i=0;i<scores.length();i++){
                                 JSONObject jsob = scores.optJSONObject(i);
                                 System.out.println(jsob.getString("id") + ". " + jsob.getString("task") + " : " + Integer.toString(jsob.getInt("weight")));
-                                // @todo hydrate view
+                                tasks.add(jsob.getString("id") + ". " + jsob.getString("task") + " : " + Integer.toString(jsob.getInt("weight")));
                             }
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(HomeActivity.this,
+                                    android.R.layout.simple_list_item_1, tasks);
+                            mListView.setAdapter(adapter);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
