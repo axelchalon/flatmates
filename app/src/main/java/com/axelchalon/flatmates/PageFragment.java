@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -48,11 +49,13 @@ public class PageFragment extends Fragment {
         args.putInt(ARG_PAGE, page);
         PageFragment fragment = new PageFragment();
         fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         mPage = getArguments().getInt(ARG_PAGE);
     }
@@ -64,9 +67,12 @@ public class PageFragment extends Fragment {
         View view;
         if (getArguments().getInt(ARG_PAGE) == 1) {
             view = inflater.inflate(R.layout.fragment_besognes, container, false);
+
+            System.out.println("GETAA");
             getTasksDone(view);
         } else if (getArguments().getInt(ARG_PAGE) == 2) {
             view = inflater.inflate(R.layout.fragment_coloc, container, false);
+            System.out.println("GETOUU");
             getFlatmates(view);
             getTasks(view);
         }
@@ -292,6 +298,8 @@ public class PageFragment extends Fragment {
 
         String points = selectedBesogne.substring(selectedBesogne.lastIndexOf(" ") + 1);
         String selected = selectedBesogne.substring(0, selectedBesogne.indexOf("."));
+        System.out.println("points" + points);
+        System.out.println("selected" + selected);
         didTask(selected);
         Toast.makeText(this.getActivity().getApplicationContext(), "Super ! Cela te fait " + points + " points en plus !", Toast.LENGTH_SHORT).show();
     }
