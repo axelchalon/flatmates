@@ -90,7 +90,7 @@ public class VerifyActivity extends AppCompatActivity {
 
 
                             Context context = getApplicationContext();
-                            CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                            CharSequence text = "Mauvais code, camarade !";
                             int duration = Toast.LENGTH_LONG;
 
                             Toast toast = Toast.makeText(context, text, duration);
