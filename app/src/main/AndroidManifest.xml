@@ -19,7 +19,8 @@
         </activity>
         <activity android:name=".HomeActivity" />
         <activity android:name=".VerifyActivity" />
-        <activity android:name=".NewTaskActivity"></activity>
+        <activity android:name=".NewTaskActivity" />
+        <activity android:name=".EditTaskActivity"></activity>
     </application>
 
 </manifest>

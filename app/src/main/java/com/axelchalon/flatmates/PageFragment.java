@@ -109,7 +109,7 @@ public class PageFragment extends Fragment {
 
                             for(int i=0;i<scores.length();i++){
                                 JSONObject jsob = scores.optJSONObject(i);
-                                users.add(jsob.getString("num") + ". " + jsob.getString("name") + " : " + jsob.getString("points"));
+                                users.add(jsob.getString("num") + ". " + jsob.getString("name") + " pour " + jsob.getString("points"));
                             }
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(hacktt,
@@ -167,8 +167,7 @@ public class PageFragment extends Fragment {
 
                             for(int i=0;i<scores.length();i++){
                                 JSONObject jsob = scores.optJSONObject(i);
-                                System.out.println(jsob.getString("id") + ". " + jsob.getString("task") + " : " + Integer.toString(jsob.getInt("weight")));
-                                tasks.add(jsob.getString("id") + ". " + jsob.getString("task") + " : " + Integer.toString(jsob.getInt("weight")));
+                                tasks.add(jsob.getString("id") + ". " + jsob.getString("task") + " pour " + Integer.toString(jsob.getInt("weight")));
                             }
 
                             ArrayAdapter<String> adapter = new ArrayAdapter<String>(hacktt,
@@ -334,6 +333,7 @@ public class PageFragment extends Fragment {
 
         menu.setHeaderTitle("Besogne");
         menu.add(0, v.getId(), 0, "C'est fait !");
+        menu.add(0, v.getId(), 0, "Modifier la besogne");
         menu.add(0, v.getId(), 0, "Supprimer la besogne");
         menu.add(0, v.getId(), 0, "Nouvelle besogne");
     }
@@ -343,6 +343,7 @@ public class PageFragment extends Fragment {
         System.out.println("Bselected bes" + selectedBesogne);
 
         if(item.getTitle()=="C'est fait !"){function1(item.getItemId());}
+        else if(item.getTitle()=="Modifier la besogne"){function4(item.getItemId());}
         else if(item.getTitle()=="Supprimer la besogne"){function2(item.getItemId());}
         else if(item.getTitle()=="Nouvelle besogne"){function3(item.getItemId());}
         else {return false;}
@@ -379,6 +380,22 @@ public class PageFragment extends Fragment {
     public void function3(int id){
 
         Intent i = new Intent(this.getActivity().getApplicationContext(), NewTaskActivity.class);
+        startActivity(i);
+    }
+    public void function4(int id){
+
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String selectedBesogne = prefs.getString("selcmitem", null);
+
+
+        String points = selectedBesogne.substring(selectedBesogne.lastIndexOf(" ") + 1);
+        String selected = selectedBesogne.substring(0, selectedBesogne.indexOf("."));
+        String naime = selectedBesogne.substring(selectedBesogne.indexOf(".") + 2, selectedBesogne.lastIndexOf(" pour"));
+
+        Intent i = new Intent(this.getActivity().getApplicationContext(), EditTaskActivity.class);
+        i.putExtra("task_id",selected);
+        i.putExtra("name",naime);
+        i.putExtra("weight",points);
         startActivity(i);
     }
 
