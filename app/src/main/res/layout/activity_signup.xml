@@ -30,7 +30,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginTop="32dp"
         android:inputType="text"
-        android:text="David"
+        android:text=""
         android:imeOptions="actionDone"
         fontPath="fonts/Gotham-Bold.otf"/>
     <!--    android:background="@drawable/rounded_edittext" -->
@@ -57,7 +57,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginTop="32dp"
         android:inputType="text"
-        android:text="007"
+        android:text=""
         android:imeOptions="actionDone"
         fontPath="fonts/Gotham-Bold.otf"/>
 <!--    android:background="@drawable/rounded_edittext" -->
