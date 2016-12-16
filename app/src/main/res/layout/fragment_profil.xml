@@ -10,8 +10,16 @@
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="MON PROFIL"
-        android:gravity="center" />
+        android:layout_height="20dp"
+        android:paddingLeft="30dp"
+        android:id="@+id/mesbesognesfaites"
+        android:text="Mes dernières besognes"/>
+
+    <ListView
+        android:id="@+id/homeTasksDoneListViewMM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mesbesognesfaites"
+        />
 
 </RelativeLayout>

@@ -11,6 +11,7 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:paddingLeft="30dp"
         android:id="@+id/mescolocs"
         android:text="Mes colocs"/>
 
@@ -24,6 +25,7 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:paddingLeft="30dp"
         android:layout_below="@+id/homeUsersListView"
         android:id="@+id/lesbesognes"
         android:text="Les besognes"/>

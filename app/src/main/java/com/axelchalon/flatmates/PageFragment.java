@@ -2,6 +2,7 @@ package com.axelchalon.flatmates;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -67,19 +68,18 @@ public class PageFragment extends Fragment {
         View view;
         if (getArguments().getInt(ARG_PAGE) == 1) {
             view = inflater.inflate(R.layout.fragment_besognes, container, false);
-
-            System.out.println("GETAA");
             getTasksDone(view);
         } else if (getArguments().getInt(ARG_PAGE) == 2) {
             view = inflater.inflate(R.layout.fragment_coloc, container, false);
-            System.out.println("GETOUU");
             getFlatmates(view);
             getTasks(view);
         }
-        else
+        else {
             view = inflater.inflate(R.layout.fragment_profil, container, false);
 //        TextView textView = (TextView) view;
 //        textView.setText("Fragment #" + mPage);
+            getMyTasksDone(view);
+        }
         return view;
     }
 
@@ -260,6 +260,65 @@ public class PageFragment extends Fragment {
         Volley.newRequestQueue(ctx).add(myUserRequest);
     }
 
+
+    protected void getMyTasksDone(final View view) {
+
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String usernum = prefs.getString("usernum", null);
+
+        HashMap<String,String> params = new HashMap<String, String>();
+
+
+        final Context ctx = this.getActivity().getApplicationContext();
+        final Activity hacktt = this.getActivity();
+        JsonObjectRequest myUserRequest = new JsonObjectRequest
+                (Request.Method.GET, "http://swarm.ovh:4/index.php?action=get_tasks_done&user_num=" + usernum, new JSONObject(params), new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        mListView = (ListView) view.findViewById(R.id.homeTasksDoneListViewMM);
+                        System.out.println("TASKS");
+                        try {
+                            JSONArray scores = response.getJSONArray("history");
+
+                            List<String> tasks = new ArrayList<String>();
+
+                            for(int i=0;i<scores.length();i++){
+                                JSONObject jsob = scores.optJSONObject(i);
+                                tasks.add(jsob.getString("task") + " le " + jsob.getString("timestamp"));
+                            }
+
+                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(hacktt,
+                                    android.R.layout.simple_list_item_1, tasks);
+                            mListView.setAdapter(adapter);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("WCC");
+                        error.printStackTrace();
+
+                        Context context = ctx;
+                        CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(ctx).add(myUserRequest);
+    }
+
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -276,6 +335,7 @@ public class PageFragment extends Fragment {
         menu.setHeaderTitle("Besogne");
         menu.add(0, v.getId(), 0, "C'est fait !");
         menu.add(0, v.getId(), 0, "Supprimer la besogne");
+        menu.add(0, v.getId(), 0, "Nouvelle besogne");
     }
 
     @Override
@@ -284,6 +344,7 @@ public class PageFragment extends Fragment {
 
         if(item.getTitle()=="C'est fait !"){function1(item.getItemId());}
         else if(item.getTitle()=="Supprimer la besogne"){function2(item.getItemId());}
+        else if(item.getTitle()=="Nouvelle besogne"){function3(item.getItemId());}
         else {return false;}
         return true;
     }
@@ -304,8 +365,60 @@ public class PageFragment extends Fragment {
         Toast.makeText(this.getActivity().getApplicationContext(), "Super ! Cela te fait " + points + " points en plus !", Toast.LENGTH_SHORT).show();
     }
     public void function2(int id){
-        Toast.makeText(this.getActivity().getApplicationContext(), "function 2 called", Toast.LENGTH_SHORT).show();
+
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String selectedBesogne = prefs.getString("selcmitem", null);
+
+
+        String points = selectedBesogne.substring(selectedBesogne.lastIndexOf(" ") + 1);
+        String selected = selectedBesogne.substring(0, selectedBesogne.indexOf("."));
+
+        deleteTask(selected);
+        Toast.makeText(this.getActivity().getApplicationContext(), "La besogne a été supprimée !", Toast.LENGTH_SHORT).show();
     }
+    public void function3(int id){
+
+        Intent i = new Intent(this.getActivity().getApplicationContext(), NewTaskActivity.class);
+        startActivity(i);
+    }
+
+    protected void deleteTask(String task_id) {
+
+        SharedPreferences prefs = this.getActivity().getSharedPreferences(USER_PREFS, MODE_PRIVATE);
+        String usernum = prefs.getString("usernum", null);
+
+        HashMap<String,String> params = new HashMap<String, String>();
+
+        final Context ctx = this.getActivity().getApplicationContext();
+        JsonObjectRequest myUserRequest = new JsonObjectRequest
+                (Request.Method.GET, "http://swarm.ovh:4/index.php?action=delete_task&user_num=" + usernum + "&task_id=" + task_id, new JSONObject(params), new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println("DELETE TASK OK");
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("WCC");
+                        error.printStackTrace();
+
+                        Context context = ctx;
+                        CharSequence text = "Impossible de se connecter au réseau, camarade !";
+                        int duration = Toast.LENGTH_LONG;
+
+                        Toast toast = Toast.makeText(context, text, duration);
+                        toast.show();
+
+                        VolleyLog.e("Error: ", error.getMessage());
+                    }
+                });
+
+        Volley.newRequestQueue(ctx).add(myUserRequest);
+    }
+
+
 
 
     protected void didTask(String task_id) {
