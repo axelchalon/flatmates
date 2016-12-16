@@ -19,7 +19,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 public class EditTaskActivity extends AppCompatActivity {
@@ -41,9 +40,9 @@ public class EditTaskActivity extends AppCompatActivity {
         String name= myIntent.getStringExtra("name");
         wlmid = myIntent.getStringExtra("task_id");
 
-        System.out.println("weight" + weight);
-        System.out.println("name" + name);
-        System.out.println("wlmid" + wlmid);
+
+
+
 
         ((EditText) findViewById(R.id.usernum_edittext)).setText(weight);
         ((EditText) findViewById(R.id.username_edittext)).setText(name);
@@ -60,8 +59,8 @@ public class EditTaskActivity extends AppCompatActivity {
         // Saving usernum in sharedPreferences
         if (new_task.trim().length() > 0 && new_weight.trim().length() > 0) {
 
-            System.out.println("new weight" + new_weight);
-            System.out.println("new name" + new_task);
+
+
 
             SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
             String usernum = prefs.getString("usernum", null);
@@ -72,9 +71,14 @@ public class EditTaskActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("WBB");
+
                             Intent i = new Intent(ctx, HomeActivity.class);
                             startActivity(i);
+
+                            CharSequence text = "Le besogne a été éditée !";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(ctx, text, duration);
+                            toast.show();
                         }
                     }, new Response.ErrorListener() {
 
@@ -88,7 +92,7 @@ public class EditTaskActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
 
-                            System.out.println("WCC");
+
                             error.printStackTrace();
 
                             VolleyLog.e("Error: ", error.getMessage());

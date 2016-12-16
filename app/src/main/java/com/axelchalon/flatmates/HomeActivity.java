@@ -7,6 +7,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,13 +74,13 @@ public class HomeActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        System.out.println("COLOCS");
+
                         try {
                             JSONArray scores = response.getJSONArray("scores");
 
                             for(int i=0;i<scores.length();i++){
                                 JSONObject jsob = scores.optJSONObject(i);
-                                System.out.println(jsob.getString("name") + " : " + jsob.getString("points"));
+
                                 // @todo hydrate view
                             }
                         } catch (JSONException e) {
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();
@@ -109,6 +109,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void addFlatou(View view){
+
+        Intent i = new Intent(this, AddFlatouActivity.class);
+        startActivity(i);
+    }
+
     protected void addFlatmate(String new_num) {
 
         SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
@@ -122,13 +128,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("NEW FLATMATE - OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();
@@ -158,13 +164,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("REMOVE FLATMATE - OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();
@@ -194,13 +200,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("NEW TASK OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();
@@ -230,13 +236,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("CHANGE TASK WEIGHT OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();
@@ -266,13 +272,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("RENAME TASK OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();
@@ -302,13 +308,13 @@ public class HomeActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("RENAME USER OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = getApplicationContext();

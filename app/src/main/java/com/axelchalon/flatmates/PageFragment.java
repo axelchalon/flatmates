@@ -64,7 +64,7 @@ public class PageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        System.out.println("woobzi");
+
         View view;
         if (getArguments().getInt(ARG_PAGE) == 1) {
             view = inflater.inflate(R.layout.fragment_besognes, container, false);
@@ -102,7 +102,7 @@ public class PageFragment extends Fragment {
 
 
                         mListView = (ListView) view.findViewById(R.id.homeUsersListView);
-                        System.out.println("FLATMATES");
+
                         try {
                             JSONArray scores = response.getJSONArray("scores");
                             List<String> users = new ArrayList<String>();
@@ -124,7 +124,7 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = ctx;
@@ -159,7 +159,7 @@ public class PageFragment extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         mListView = (ListView) view.findViewById(R.id.homeTasksListView);
-                        System.out.println("TASKS");
+
                         try {
                             JSONArray scores = response.getJSONArray("history");
 
@@ -184,7 +184,7 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = ctx;
@@ -219,7 +219,7 @@ public class PageFragment extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         mListView = (ListView) view.findViewById(R.id.homeTasksDoneListView);
-                        System.out.println("TASKS");
+
                         try {
                             JSONArray scores = response.getJSONArray("history");
 
@@ -242,7 +242,7 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = ctx;
@@ -277,7 +277,7 @@ public class PageFragment extends Fragment {
                     public void onResponse(JSONObject response) {
 
                         mListView = (ListView) view.findViewById(R.id.homeTasksDoneListViewMM);
-                        System.out.println("TASKS");
+
                         try {
                             JSONArray scores = response.getJSONArray("history");
 
@@ -300,7 +300,7 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = ctx;
@@ -340,7 +340,7 @@ public class PageFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        System.out.println("Bselected bes" + selectedBesogne);
+
 
         if(item.getTitle()=="C'est fait !"){function1(item.getItemId());}
         else if(item.getTitle()=="Modifier la besogne"){function4(item.getItemId());}
@@ -351,8 +351,8 @@ public class PageFragment extends Fragment {
     }
 
     public void function1(int id){
-        System.out.println("id" + id);
-        System.out.println("selected bes" + selectedBesogne);
+
+
 
         SharedPreferences prefs = this.getActivity().getSharedPreferences(USER_PREFS, MODE_PRIVATE);
         String selectedBesogne = prefs.getString("selcmitem", null);
@@ -360,8 +360,8 @@ public class PageFragment extends Fragment {
 
         String points = selectedBesogne.substring(selectedBesogne.lastIndexOf(" ") + 1);
         String selected = selectedBesogne.substring(0, selectedBesogne.indexOf("."));
-        System.out.println("points" + points);
-        System.out.println("selected" + selected);
+
+
         didTask(selected);
         Toast.makeText(this.getActivity().getApplicationContext(), "Super ! Cela te fait " + points + " points en plus !", Toast.LENGTH_SHORT).show();
     }
@@ -382,6 +382,13 @@ public class PageFragment extends Fragment {
         Intent i = new Intent(this.getActivity().getApplicationContext(), NewTaskActivity.class);
         startActivity(i);
     }
+
+    public void addFlatou(View view){
+
+        Intent i = new Intent(this.getActivity().getApplicationContext(), AddFlatouActivity.class);
+        startActivity(i);
+    }
+
     public void function4(int id){
 
         SharedPreferences prefs = this.getActivity().getSharedPreferences(USER_PREFS, MODE_PRIVATE);
@@ -412,13 +419,13 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("DELETE TASK OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = ctx;
@@ -451,13 +458,13 @@ public class PageFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        System.out.println("DID TASK OK");
+
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("WCC");
+
                         error.printStackTrace();
 
                         Context context = ctx;

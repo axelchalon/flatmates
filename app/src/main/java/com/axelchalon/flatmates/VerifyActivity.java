@@ -54,8 +54,8 @@ public class VerifyActivity extends AppCompatActivity {
             SharedPreferences prefs = getSharedPreferences(USER_PREFS, MODE_PRIVATE);
             String usernum = prefs.getString("usernum", null);
             String username = prefs.getString("username", null);
-            System.out.println(username);
-            System.out.println("http://swarm.ovh:4/index.php?action=verify_account&user_num=" + usernum + "&token=" + token + "&name=" + username);
+
+
 
             HashMap<String,String> params = new HashMap<String, String>();
             final Context ctx = this;
@@ -73,16 +73,19 @@ public class VerifyActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                System.out.println("WBB");
                                 Intent i = new Intent(ctx, HomeActivity.class);
                                 startActivity(i);
+
+                                CharSequence text = "Bienvenue à bord !";
+                                int duration = Toast.LENGTH_LONG;
+                                Toast toast = Toast.makeText(ctx, text, duration);
+                                toast.show();
                             }
                         }
                     }, new Response.ErrorListener() {
 
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            System.out.println("WCC");
                             error.printStackTrace();
 
 
@@ -94,17 +97,12 @@ public class VerifyActivity extends AppCompatActivity {
                             toast.show();
 
                             VolleyLog.e("Error: ", error.getMessage());
-                            try {
-                                System.out.println(new String(error.networkResponse.data,"UTF-8"));
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
                         }
                     });
 
             Volley.newRequestQueue(getApplicationContext()).add(myUserRequest);
         } else {
-            System.out.println("WDD");
+
             Context context = getApplicationContext();
             CharSequence text = "Votre numéro de téléphone, camarade !";
             int duration = Toast.LENGTH_LONG;

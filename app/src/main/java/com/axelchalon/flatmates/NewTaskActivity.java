@@ -55,9 +55,14 @@ public class NewTaskActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("WBB");
+
                             Intent i = new Intent(ctx, HomeActivity.class);
                             startActivity(i);
+
+                            CharSequence text = "La besogne a été ajoutée !";
+                            int duration = Toast.LENGTH_LONG;
+                            Toast toast = Toast.makeText(ctx, text, duration);
+                            toast.show();
                         }
                     }, new Response.ErrorListener() {
 
@@ -71,15 +76,10 @@ public class NewTaskActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
 
-                            System.out.println("WCC");
+
                             error.printStackTrace();
 
                             VolleyLog.e("Error: ", error.getMessage());
-                            try {
-                                System.out.println(new String(error.networkResponse.data,"UTF-8"));
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
                         }
                     });
 

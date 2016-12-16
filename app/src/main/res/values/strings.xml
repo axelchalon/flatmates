@@ -8,4 +8,6 @@
     <string name="set_token_textview_">Code</string>
     <string name="name_task">Nom de la besogne</string>
     <string name="task_weight">Points de récompense</string>
+    <string name="add_rrr">Ajouter un coloc</string>
+    <string name="name_flatou">Numéro du coloc</string>
 </resources>

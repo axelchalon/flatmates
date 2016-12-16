@@ -80,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("WBB");
+
                             Intent i = new Intent(ctx, VerifyActivity.class);
                             startActivity(i);
                         }
@@ -96,25 +96,19 @@ public class SignupActivity extends AppCompatActivity {
                             Toast toast = Toast.makeText(context, text, duration);
                             toast.show();
 
-                            System.out.println("WCC");
+
                             error.printStackTrace();
 
                             VolleyLog.e("Error: ", error.getMessage());
-                            try {
-                                System.out.println(new String(error.networkResponse.data,"UTF-8"));
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
                         }
                     });
 
             Volley.newRequestQueue(getApplicationContext()).add(myUserRequest);
         } else {
-            System.out.println("WDD");
+
             Context context = getApplicationContext();
             CharSequence text = "Votre numéro de téléphone, camarade !";
             int duration = Toast.LENGTH_LONG;
-
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }

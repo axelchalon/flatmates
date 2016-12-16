@@ -20,7 +20,8 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".VerifyActivity" />
         <activity android:name=".NewTaskActivity" />
-        <activity android:name=".EditTaskActivity"></activity>
+        <activity android:name=".EditTaskActivity" />
+        <activity android:name=".AddFlatouActivity"></activity>
     </application>
 
 </manifest>
